@@ -108,9 +108,6 @@ systemd-python                     == 234
 Twisted                           ==  23.10.0
 txaio                             ==  23.1.1
 typing_extensions                 ==  4.6.2
-          
-
-ufw                               ==  0.36.1
 unattended-upgrades               ==  0.1
 urllib3                           ==  1.26.5
 usb-creator                       ==  0.3.7

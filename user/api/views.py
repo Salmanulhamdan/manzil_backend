@@ -16,7 +16,7 @@ from rest_framework import serializers,generics
 import logging
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from rest_auth.registration.views import SocialLoginView
+
 from decouple import config 
 from rest_framework.decorators import api_view, permission_classes
 from chat.models import Message
@@ -160,11 +160,11 @@ class GetUserView(APIView):
     
 
 #social_login
-class FacebookLogin(SocialLoginView):
-    adapter_class = FacebookOAuth2Adapter
+# class FacebookLogin(SocialLoginView):
+#     adapter_class = FacebookOAuth2Adapter
 
-class GoogleLogin(SocialLoginView):
-    adapter_class = GoogleOAuth2Adapter
+# class GoogleLogin(SocialLoginView):
+#     adapter_class = GoogleOAuth2Adapter
 
 
 

@@ -14,9 +14,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import serializers,generics
 import logging
-from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from rest_auth.registration.views import SocialLoginView
+# from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+# from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+# from rest_auth.registration.views import SocialLoginView
 from decouple import config 
 from rest_framework.decorators import api_view, permission_classes
 from chat.models import Message
@@ -159,12 +159,12 @@ class GetUserView(APIView):
         return Response(serializer.data,status=200)
     
 
-#social_login
-class FacebookLogin(SocialLoginView):
-    adapter_class = FacebookOAuth2Adapter
+# #social_login
+# class FacebookLogin(SocialLoginView):
+#     adapter_class = FacebookOAuth2Adapter
 
-class GoogleLogin(SocialLoginView):
-    adapter_class = GoogleOAuth2Adapter
+# class GoogleLogin(SocialLoginView):
+#     adapter_class = GoogleOAuth2Adapter
 
 
 

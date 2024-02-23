@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import ContactListvView, FollowUnfollowUserView,  PlanViewSet, ProfilePhotoUpdateAPIView, Signup, MyProfile, UserProfile, UserProfileStatusView, UserUpdateView,login,FacebookLogin,GoogleLogin,RegisteredUsers,UserDetail,BlockUser,DeletePost,GetUserView,RazorpayOrderView,UserPlanViewSet,ProfessionsViewSet
+from .views import ContactListvView, FollowUnfollowUserView,  PlanViewSet, ProfilePhotoUpdateAPIView, Signup, MyProfile, UserProfile, UserProfileStatusView, UserUpdateView,login,RegisteredUsers,UserDetail,BlockUser,DeletePost,GetUserView,RazorpayOrderView,UserPlanViewSet,ProfessionsViewSet
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
@@ -13,8 +13,8 @@ router.register(r'professions', ProfessionsViewSet)
 urlpatterns = [
     path('signup', Signup.as_view(), name='user-signup'),
     path('login', login.as_view(), name='user-login'),
-    path('rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
-    path('rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
+    # path('rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
+    # path('rest-auth/google/', GoogleLogin.as_view(), name='google_login'),
     path('refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('user',GetUserView.as_view(),name='user'),
     

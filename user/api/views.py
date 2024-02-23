@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import razorpay
-from user.api.serializers import Custom_user_serializer, HouseownerProfileSerializer,Login_serializer_user,GetUserSerializer, PlanSerializer, ProfessionalsProfileSerializer, ProfilePhotoUpdateSerializer, UserUpdateSerializer,UserPlanSerializer, UserProfileStatusSerializer,ProfessionsSerializer
+from user.api.serializers import Custom_user_serializer,Customuser_serializer, HouseownerProfileSerializer,Login_serializer_user,GetUserSerializer, PlanSerializer, ProfessionalsProfileSerializer, ProfilePhotoUpdateSerializer, UserUpdateSerializer,UserPlanSerializer, UserProfileStatusSerializer,ProfessionsSerializer
 from rest_framework.views import APIView
 from rest_framework.authentication import authenticate
 from rest_framework.permissions import AllowAny
@@ -16,7 +16,7 @@ from rest_framework import serializers,generics
 import logging
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-
+from rest_auth.registration.views import SocialLoginView
 from decouple import config 
 from rest_framework.decorators import api_view, permission_classes
 from chat.models import Message
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 class Signup(APIView):
     permission_classes = [AllowAny]
-    serializer_class = Custom_user_serializer
+    serializer_class = Customuser_serializer
 
     def post(self, request, format=None):
         try:
@@ -160,11 +160,11 @@ class GetUserView(APIView):
     
 
 #social_login
-# class FacebookLogin(SocialLoginView):
-#     adapter_class = FacebookOAuth2Adapter
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter
 
-# class GoogleLogin(SocialLoginView):
-#     adapter_class = GoogleOAuth2Adapter
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
 
 
 

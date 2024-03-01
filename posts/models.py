@@ -1,4 +1,4 @@
-rfrom django.db import models
+from django.db import models
 from user.models import CustomUser, Professions
 from django.utils import timezone
 

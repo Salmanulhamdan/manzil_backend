@@ -6,6 +6,8 @@ from .models import CustomUser,HouseownerProfile,ProfessionalsProfile
 
 @receiver(post_save, sender=CustomUser)
 def create_profile(sender,instance,created, **kwargs):
+
+
     
  
     if created:
@@ -16,5 +18,11 @@ def create_profile(sender,instance,created, **kwargs):
         else:
            
             ProfessionalsProfile.objects.create(user=instance)
+        
+        # Add a default profile photo 
+        if not instance.profile_photo:
+            instance.profile_photo = "Profile_photos/default.jpg"
+            instance.save()
+            print(instance.profile_photo)
 
 

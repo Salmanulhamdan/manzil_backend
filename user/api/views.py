@@ -14,6 +14,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import serializers,generics
 import logging
+from django.utils import timezone
+from django.db.models import Count
+from datetime import timedelta
+from django.db.models.functions import TruncMonth,ExtractMonth,ExtractYear
 # from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 # from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 # from rest_auth.registration.views import SocialLoginView
@@ -513,3 +517,26 @@ class ContactListvView(generics.RetrieveAPIView):
                 unique_user_ids.add(followed.following.id)
 
         return Response(response_data)
+
+
+
+class UserPlanChartData(APIView):
+    def get(self, request, format=None):
+        # Calculate the start date for the chart (e.g., 30 days ago)
+        start_date = timezone.now() - timedelta(days=180)
+        
+        # Filter UserPlan objects based on the start date
+        user_plans = UserPlan.objects.filter(start_date__gte=start_date)
+    
+
+        
+        # Aggregate data for the chart (e.g., count of user plans per day)
+        chart_data = user_plans.annotate(date=TruncMonth('start_date')).values('date').annotate(count=Count('id')).order_by('date')
+        
+        # Convert the queryset to a list of dictionaries for JSON serialization
+        chart_data_list = [{'month': entry['date'].strftime('%Y-%m'), 'count': entry['count']} for entry in chart_data]
+
+        return Response(chart_data_list)
+    
+
+

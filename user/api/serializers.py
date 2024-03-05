@@ -1,3 +1,4 @@
+import datetime
 from rest_framework import serializers
 from user.models import CustomUser ,HouseownerProfile,Professions,ProfessionalsProfile,Plan,UserPlan
 
@@ -155,3 +156,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             print("kkinstance")
 
         return instance
+
+
+
+
+
+

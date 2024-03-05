@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import ContactListvView, FollowUnfollowUserView,  PlanViewSet, ProfilePhotoUpdateAPIView, Signup, MyProfile, UserProfile, UserProfileStatusView, UserUpdateView,login,RegisteredUsers,UserDetail,BlockUser,DeletePost,GetUserView,RazorpayOrderView,UserPlanViewSet,ProfessionsViewSet
+from .views import ContactListvView, FollowUnfollowUserView,  PlanViewSet, ProfilePhotoUpdateAPIView, Signup, MyProfile, UserPlanChartData, UserProfile, UserProfileStatusView, UserUpdateView,login,RegisteredUsers,UserDetail,BlockUser,DeletePost,GetUserView,RazorpayOrderView,UserPlanViewSet,ProfessionsViewSet
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
@@ -27,6 +27,7 @@ urlpatterns = [
     path('follow/<int:user_id>/', FollowUnfollowUserView.as_view(), name='follow-user'),
    
     path('create-razorpay/',RazorpayOrderView.as_view(),name='razorpayorder'),
+    path('plan-chart-data/',UserPlanChartData.as_view(),name='razorpayorder'),
    
     path('', include(router.urls)),
 

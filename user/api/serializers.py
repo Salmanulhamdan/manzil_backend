@@ -2,7 +2,7 @@ import datetime
 from rest_framework import serializers
 from user.models import CustomUser ,HouseownerProfile,Professions,ProfessionalsProfile,Plan,UserPlan
 
-
+from django.utils import timezone
 
 
 class Houseowner_Profile_Serializer(serializers.ModelSerializer):
@@ -108,11 +108,11 @@ class PlanSerializer(serializers.ModelSerializer):
         model = Plan
         fields = '__all__'
 
-class UserPlanSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserPlan
-        fields = '__all__'
-        read_only_fields = ['user']
+# class UserPlanSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = UserPlan
+#         fields = '__all__'
+#         read_only_fields = ['user']
 
 
 
@@ -134,9 +134,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         fields = [ 'username', 'usertype', 'email', 'phonenumber', 'houseowner_profile', 'professional_profile']
 
     def update(self, instance, validated_data):
-        print(validated_data,"validated dta")
+
         houseowner_profile_data = validated_data.pop('houseowner_profile', None)
-        print(houseowner_profile_data,"lllssasa")
+  
         professional_profile_data = validated_data.pop('professional_profile', None)
 
         instance = super().update(instance, validated_data)
@@ -145,7 +145,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         print(instance.usertype,"lll")
 
         if instance.usertype == CustomUser.HOUSE_OWNER and houseowner_profile_data:
-            print("kkinstance")
+        
             houseowner_profile, created = HouseownerProfile.objects.get_or_create(user=instance)
             HouseownerProfileSerializer().update(houseowner_profile, houseowner_profile_data)
            
@@ -153,8 +153,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         elif instance.usertype == CustomUser.PROFESSIONAL and professional_profile_data:
             professional_profile, created = ProfessionalsProfile.objects.get_or_create(user=instance)
             ProfessionalsProfileSerializer().update(professional_profile, professional_profile_data)
-            print("kkinstance")
-
+    
         return instance
 
 
@@ -162,3 +161,17 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 
 
+class UserPlanSerializer(serializers.ModelSerializer):
+    days_left = serializers.SerializerMethodField()
+    class Meta:
+        model = UserPlan
+        fields = '__all__'
+        read_only_fields = ['user']
+
+    def get_days_left(self, obj):
+        if obj.end_date:
+            days_left = (obj.end_date - timezone.now()).days
+            return max(days_left, 0)
+        return None
+
+    

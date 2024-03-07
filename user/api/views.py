@@ -24,6 +24,7 @@ from django.db.models.functions import TruncMonth,ExtractMonth,ExtractYear
 from decouple import config 
 from rest_framework.decorators import api_view, permission_classes
 from chat.models import Message
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 # user creation
@@ -266,6 +267,19 @@ class UserPlanViewSet(viewsets.ModelViewSet):
             user.houseowner_profile.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    
+    def get_queryset(self):
+        print(self.queryset.filter(user=self.request.user))
+    
+        return self.queryset.filter(user=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        user_plan = self.get_queryset().first()
+        if user_plan:
+            serializer = self.get_serializer(instance=user_plan)
+            return Response(serializer.data)
+        return Response({"message": "User has no plan."})
 
 
 
@@ -311,6 +325,13 @@ class MyProfile(APIView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
+        try:
+            userplan = UserPlan.objects.get(user=user)
+            if userplan is not None:
+                userplan.save()
+        except ObjectDoesNotExist:
+            # Handle the case where UserPlan does not exist for the user
+            pass
 
         if user.usertype == 'professional':
             profile = ProfessionalsProfile.objects.get(user=user)
@@ -538,5 +559,10 @@ class UserPlanChartData(APIView):
 
         return Response(chart_data_list)
     
+
+
+
+
+
 
 

@@ -140,9 +140,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         professional_profile_data = validated_data.pop('professional_profile', None)
 
         instance = super().update(instance, validated_data)
-        print(instance)
-
-        print(instance.usertype,"lll")
+        
 
         if instance.usertype == CustomUser.HOUSE_OWNER and houseowner_profile_data:
         

@@ -22,7 +22,7 @@ def get_user(validated_token):
         return user
    
     except User.DoesNotExist:
-        print("user not inuserfrommiddileware")
+       
         return AnonymousUser()
 
 

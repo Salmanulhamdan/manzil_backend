@@ -25,7 +25,7 @@ def create_profile(sender,instance,created, **kwargs):
         if not instance.profile_photo:
             instance.profile_photo = "Profile_photos/default.jpg"
             instance.save()
-            print(instance.profile_photo)
+           
 
 
 

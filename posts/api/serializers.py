@@ -139,10 +139,9 @@ class RequirmentSerializer(serializers.ModelSerializer):
     
     def get_is_intrest_confirmed(self, obj):
         user = self.context['request'].user
-        print(user,"usereeeis here")
-        print(obj,"objjjjj")
+        
         interest_instance = intrests.objects.filter( requirment=obj)
-        print(interest_instance,"jjjjjjdde")
+       
 
         try:
             interest_instance = intrests.objects.get( requirment=obj, conformation=True)
@@ -153,7 +152,7 @@ class RequirmentSerializer(serializers.ModelSerializer):
         except intrests.DoesNotExist:
             return False
         except Exception as e:
-            print(f"Error in get_is_intrested: {e}")
+           
             return False
 
         

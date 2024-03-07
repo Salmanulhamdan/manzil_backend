@@ -23,7 +23,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             }))
             
     async def receive(self, text_data):
-        print(text_data,"textdattatat")
+       
         logger.info("WebSocket received data: %s", text_data)
         await self.send(text_data=json.dumps({'status': 'OK,recieved'}))
         
@@ -35,11 +35,11 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         )
         
     async def send_notification(self, event):
-        print(event,"event")
+       
 
         logger.info("Sending notification: %s", event)
         data = json.loads(event.get('value'))
-        print(data,"senfoooooo")
+       
         await self.send(text_data=json.dumps({
                 'type' : 'notification',
                 'payload': data

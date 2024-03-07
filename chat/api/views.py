@@ -19,12 +19,12 @@ class CreateChatRoom(APIView):
     def post(self, request, pk):
         current_user = request.user
         other_user = User.objects.get(pk=pk)
-        print(current_user,"aaaand",other_user)
+        
 
         # Check if a chat room already exists between the users
         existing_chat_rooms = ChatRoom.objects.filter(members=current_user).filter(members=other_user)
         if existing_chat_rooms.exists():
-            print("excisting")
+          
             serializer = ChatRoomSerializer(existing_chat_rooms.first())
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -44,12 +44,12 @@ class RoomMessagesView(APIView):
     def get(self, request, pk):
         try:
             room = ChatRoom.objects.get(pk=pk)
-            print(room,"rom")
+          
             messages = Message.objects.filter(room=room)
-            print(messages,"romessagesm")
+          
 
             serialized_messages = self.serializer_class(messages, many=True).data
-            print(serialized_messages,"serialized_messages")
+            
 
             return Response(serialized_messages, status=status.HTTP_200_OK)
         except ChatRoom.DoesNotExist:

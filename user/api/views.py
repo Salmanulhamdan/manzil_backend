@@ -209,7 +209,7 @@ class BlockUser(APIView):
         except CustomUser.DoesNotExist:
             return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            print(f"An error occurred: {str(e)}")
+           
             return Response({"message": "Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
@@ -223,7 +223,7 @@ class DeletePost(APIView):
             p.delete()
             return Response({"message": "success"}, status=status.HTTP_200_OK)
         except Posts.DoesNotExist:
-            print("post not found")
+           
             return Response({"message": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
         
 
@@ -243,8 +243,7 @@ class UserPlanViewSet(viewsets.ModelViewSet):
    
     def create(self,request,*args, **kwargs):
         user = request.user
-        print(user)
-        print(request.data)
+        
         serializer=self.get_serializer(data=request.data)
 
         # Check if a UserPlan already exists for the user
@@ -270,7 +269,7 @@ class UserPlanViewSet(viewsets.ModelViewSet):
     
     
     def get_queryset(self):
-        print(self.queryset.filter(user=self.request.user))
+      
     
         return self.queryset.filter(user=self.request.user)
 
@@ -444,18 +443,17 @@ class UserUpdateView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        print(self.request.user,"kkksadq")
+      
         return self.request.user
     
     def put(self, request, *args, **kwargs):
-        print("put enabled")
+       
         user = self.request.user
-        print(user, "killlo")
-        print(request.data)
+        
 
         # Extract nested data for houseowner_profile
         if user.usertype == "houseowner":
-            print("houseowner")
+            
             houseowner_profile_data = {
                 'place': request.data.get('place', None),
             }
@@ -497,7 +495,7 @@ class ContactListvView(generics.RetrieveAPIView):
 
     def retrieve(self, request, *args, **kwargs):
         user = self.request.user
-        print(user)
+       
         followers = user.followers.all()
         following = user.following.all()
         unique_user_ids = set()

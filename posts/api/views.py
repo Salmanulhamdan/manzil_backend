@@ -274,7 +274,7 @@ class RequirmentViewset(viewsets.ModelViewSet):
                 profession = user.professional_profile.profession
 
                 # Get the requirements excluding those the user has shown interest in
-                requirements_not_intrested = Requirment.objects.exclude(intrested__user=user).exclude(user=user).exclude(profession=profession)
+                requirements_not_intrested = Requirment.objects.exclude(Q(intrested__user=user) | Q(user=user) | ~Q(profession=profession))
 
                 serializer = self.get_serializer(requirements_not_intrested, many=True)
                 return Response(serializer.data, status=200)
@@ -357,7 +357,7 @@ class IntrestsViewset(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['GET'])
     def get_inrests(self, request):
-        print("gettinnn")
+        
         try:
 
             requirment=request.data.get('requirment')
@@ -374,17 +374,16 @@ class IntrestsViewset(viewsets.ModelViewSet):
         # Retrieve answers based on the specific question
         requirment = self.request.query_params.get('requirment')
         
-        print(intrests.objects.filter(requirment=requirment))
+        
         if requirment:
             return intrests.objects.filter(requirment=requirment)
         
     @action(detail=False, methods=['PATCH'])
     def confirm_intrest(self,request, *args, **kwargs):
-        print("Gggggggggggggg")
-        print(request.user)
+       
         try:
             intrest_id = kwargs.get('intrest_id')
-            print(intrest_id)
+           
             intrest = intrests.objects.get(pk=intrest_id)
         except intrests.DoesNotExist:
             return Response({"error": "Intrest object does not exist"}, status=status.HTTP_404_NOT_FOUND)
@@ -530,7 +529,7 @@ class AnswerEditView(generics.UpdateAPIView):
         if user==instance.user:
             serializer = self.get_serializer(instance, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
-            print(instance.user.username,"instance")
+          
 
             self.perform_update(serializer)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -549,12 +548,12 @@ class ReportViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def report_item(self, request):
-        print("kk")
+     
         user = request.user
         reason = request.data.get('reason', '')
         report_type=request.data.get('report_type')
         item_id=request.data.get('item_id')
-        print(item_id,"idd")
+   
 
         if report_type in ['requirement', 'question', 'post']:
             model_mapping = {
@@ -660,7 +659,7 @@ class ReportedItemsView(APIView):
                 serialized_reported_items.append(report_data)
 
             else:
-                print("notvalid")
+                pass
 
         return Response({'reported_items': serialized_reported_items}, status=status.HTTP_200_OK)
 
@@ -722,7 +721,7 @@ class NotificationsSeenView(generics.ListAPIView):
 
     def post(self, request, pk, *args, **kwargs):
         try:
-            print("hhhhhhhhhhhhhhhhhhhh")
+           
             notification = Notification.objects.get(pk=pk)
             notification.is_seen = True
             notification.save()

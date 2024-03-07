@@ -14,7 +14,7 @@ def handle_report_save(sender, instance,created, **kwargs):
             count=post.report_count()
             if count > 3:
                 post.is_blocked = True
-                print(post.is_blocked,"blocle")
+                
                 post.save()
         elif instance.report_type == 'requirement':
             requirement = Requirment.objects.get(pk=instance.reported_item_id)
@@ -33,8 +33,7 @@ def handle_report_save(sender, instance,created, **kwargs):
 
 @receiver(post_save, sender=Notification)
 def send_notification(sender, instance, created, **kwargs):
-    print(instance,instance.from_user.username)
-    print("signaling.....from......notfication")
+   
     if created:
         channel_layer = channels.layers.get_channel_layer()
         group_name = f"notify_{instance.to_user_id}"
